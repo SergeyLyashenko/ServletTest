@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Home</title>
+    <title><c:out value="${category}"/></title>
 
     <!-- Bootstrap core CSS -->
     <link href="<c:url value="/static/css/bootstrap.css"/>" rel="stylesheet">
@@ -34,20 +34,20 @@
     <!-- Example row of columns -->
     <div class="row">
 
-            <c:forEach var="entry" items="${categories}">
-                <div class="col-lg-4">
-                    <form action="/" method="get">
-                        <h2><c:out value="${entry.key}"/></h2>
-                <input name="name" value="<c:out value="${entry.key}"/>" type="hidden">
-                <p><c:out value="${entry.value}"/></p>
-                        <input name="description" value="<c:out value="${entry.value}"/>" type="hidden">
-                <p><a class="btn btn-primary" href="<c:out value="${entry.key}"/>" role="button">View details &raquo;</a></p>
-                <c:if test="${user.role eq 'admin'}">
-                    <input class="btn btn-primary" type="submit" value="Edit &raquo;">
-                </c:if>
-                    </form>
-                </div>
-            </c:forEach>
+        <c:forEach var="entry" items="${products}">
+            <div class="col-lg-4">
+                <form action="/" method="get">
+                    <h2><c:out value="${entry.key}"/></h2>
+                    <input name="name" value="<c:out value="${entry.key}"/>" type="hidden">
+                    <p><c:out value="${entry.value}"/></p>
+                    <input name="description" value="<c:out value="${entry.value}"/>" type="hidden">
+
+                    <c:if test="${user.role eq 'admin'}">
+                        <input class="btn btn-primary" type="submit" value="Edit &raquo;">
+                    </c:if>
+                </form>
+            </div>
+        </c:forEach>
 
 
         <c:if test="${user.role eq 'admin'}">

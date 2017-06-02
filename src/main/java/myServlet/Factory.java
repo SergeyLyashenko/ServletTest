@@ -2,7 +2,7 @@ package myServlet;
 
 import myServlet.controllers.Controller;
 import myServlet.controllers.HomeController;
-import myServlet.controllers.LoginController;
+import myServlet.controllers.CategoryController;
 import myServlet.controllers.RegistrationController;
 import myServlet.dao.UserDao;
 import myServlet.dao.UserDaoImpl;
@@ -10,7 +10,6 @@ import myServlet.services.UserService;
 import myServlet.services.UserServiceImpl;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -20,8 +19,8 @@ public class Factory {
         return new HomeController();
     }
 
-    public static Controller getLoginController() {
-        return new LoginController();
+    public static Controller getCategoryController() {
+        return new CategoryController();
     }
 
     public static Controller getRegistrationController(UserService userService) {
@@ -47,10 +46,7 @@ public class Factory {
             connection = DriverManager.getConnection(url, userName, password);
         } catch (SQLException | ClassNotFoundException  e) {
             e.printStackTrace();
-            System.out.println("sdfasdfasdfasdgsdfgsdfgsdfg5879765464");
         }
-
-
         return connection;
 
     }

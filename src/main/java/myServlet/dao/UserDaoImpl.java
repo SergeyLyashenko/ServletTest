@@ -2,12 +2,9 @@ package myServlet.dao;
 
 import myServlet.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
 
     private final Connection connection;
 
@@ -19,9 +16,10 @@ public class UserDaoImpl implements UserDao{
         String name = user.getUsername();
         String password = user.getPassword();
         String email = user.getEmail();
+        String hash = user.getHash();
 
 
-        String query = "INSERT INTO USERS VALUES ('" + name + "', '" + password + "', '" + email + "')";
+        String query = "INSERT INTO USERS(USERNAME, PASSWORD, EMAIL, HASH, ROLE) VALUES ('" + name + "', '" + password + "', '" + email + "', '" + hash + "', 'user')";
 
 
         connection.createStatement().execute(query);
@@ -31,8 +29,23 @@ public class UserDaoImpl implements UserDao{
         return user;
     }
 
-    public User getByName(User user) {
-        return null;
+    public User getByName(User requestUser) throws SQLException {
+        String query = "SELECT * FROM USERS WHERE USERNAME = '" + requestUser.getUsername() + "'";
+        ResultSet resultSet = connection.createStatement().executeQuery(query);
+
+
+
+
+        User daoUser = new User();
+        if (resultSet.next()){
+
+            daoUser.setHash(resultSet.getString("HASH"));
+            daoUser.setUsername(resultSet.getString("USERNAME"));
+            daoUser.setPassword(resultSet.getString("PASSWORD"));
+            daoUser.setRole(resultSet.getString("ROLE"));
+
+        }
+        return daoUser;
     }
 
     public User remove(User user) {

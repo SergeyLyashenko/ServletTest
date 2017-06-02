@@ -1,6 +1,9 @@
 package myServlet;
 
+import myServlet.controllers.CategoryController;
 import myServlet.controllers.Controller;
+import myServlet.controllers.VerificationController;
+import myServlet.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,16 +25,37 @@ public class MainServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         controllerMap.put(new Request("GET", "/"), Factory.getHomeController());
-        controllerMap.put(new Request("GET", "/login"), Factory.getLoginController());
-        controllerMap.put(new Request("POST", "/postProcPage"), Factory.getRegistrationController(
+        controllerMap.put(new Request("GET", "/category"), Factory.getCategoryController());
+        controllerMap.put(new Request("POST", "/dddd"), Factory.getRegistrationController(
                 getUserServiceImpl(
                         getUserDaoImpl(
                                 getConnection()))));
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
-        handleRequest(request, response);
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = null;
+        try {
+
+            user = VerificationController.isLogin(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (user != null) {
+            request.setAttribute("user",user);
+            if(request.getRequestURI().length()>1&&!request.getRequestURI().equals("/favicon.ico")){
+                try {
+                    request.getRequestDispatcher(getView(new CategoryController().process(request,response))).forward(request,response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+
+                handleRequest(request, response);
+            }
+        }
+
+
     }
 
     @Override
@@ -48,6 +72,7 @@ public class MainServlet extends HttpServlet {
                 servletRequest.getRequestDispatcher(getView(controller.process(servletRequest, servletResponse)))
                         .forward(servletRequest, servletResponse);
             } else {
+                System.out.println(servletRequest.getRequestURI());
                 servletRequest.getRequestDispatcher("/WEB-INF/error.jsp").forward(servletRequest, servletResponse);
             }
         } catch (ServletException | IOException | SQLException e) {

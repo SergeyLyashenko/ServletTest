@@ -17,8 +17,8 @@ public class UserServiceImpl implements UserService{
         return userDao.save(user);
     }
 
-    public User getByName(User user) {
-        return null;
+    public User getByName(User user) throws SQLException {
+        return userDao.getByName(user);
     }
 
     public User remove(User user) {

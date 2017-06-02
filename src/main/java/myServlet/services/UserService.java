@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public interface UserService {
     User save(User user) throws SQLException;
 
-    User getByName(User user);
+    User getByName(User user) throws SQLException;
 
     User remove(User user);
 

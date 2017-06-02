@@ -5,6 +5,8 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private String hash;
+    private String role;
 
     public User(){}
 
@@ -36,5 +38,31 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", hash='" + hash + '\'' +
+                '}';
     }
 }
